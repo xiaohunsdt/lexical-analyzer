@@ -12,10 +12,12 @@ package entity;
  * Defined all of Class of tokens in here
  */
 public enum TokenType {
-    //int
-    INT,
-    //char
-    CHAR,
+    //Variable type
+    VARTYPE,
+    //integer
+    INTEGER,
+    //string
+    STRING,
     //function and variables
     ID,
     //if
@@ -60,10 +62,6 @@ public enum TokenType {
     RBRACE,
     // ,
     COMMA,
-    // \t
-    TABC,
-    // \n
-    BREAKC,
-    // ' '
-    WHITESPACE;
+    // \t \n ' '
+    WHITESPACE
 }
