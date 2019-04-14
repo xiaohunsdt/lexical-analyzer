@@ -4,7 +4,6 @@ import net.novaborn.fa.entity.NFA;
 import net.novaborn.fa.entity.State;
 import net.novaborn.fa.entity.Transition;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
@@ -43,13 +42,18 @@ public class ExpToNfaHandler implements BaseHandler {
             } else if (character.equals("*")) {
                 State firstState = stateStack.firstElement();
             } else {
-                State thisState = new State(previousState.getId() + 1);
-                Transition transition = new Transition();
-                transition.setCharacters(Arrays.asList(character));
-                transition.setFromState(previousState);
-                transition.setToState(thisState);
-                this.nfa.addTransitionFunc(transition);
+
             }
+        }
+
+        if (opreation.size() == 1) {
+            State thisState = new State(previousState.getId() + 1);
+            Transition transition = new Transition();
+            transition.setCharacters(Arrays.asList(opreation.pop()));
+            transition.setFromState(previousState);
+            transition.setToState(thisState);
+            this.nfa.addState(thisState);
+            this.nfa.addTransitionFunc(transition);
         }
 
         return this;
