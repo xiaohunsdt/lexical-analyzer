@@ -1,4 +1,4 @@
-package entity;
+package net.novaborn.entity;
 
 import lombok.Data;
 

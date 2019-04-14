@@ -1,6 +1,6 @@
-package regular;
+package net.novaborn.regular.entity;
 
-import entity.TokenType;
+import net.novaborn.entity.TokenType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

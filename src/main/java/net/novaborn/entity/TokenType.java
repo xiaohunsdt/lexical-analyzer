@@ -1,15 +1,11 @@
-package entity;
+package net.novaborn.entity;
 
 /**
  * Created with IntelliJ IDEA
  * User: wangyong
  * Date: 2019-04-10
  * Time: 13:38
- * Description:
- */
-
-/**
- * Defined all of Class of tokens in here
+ * Description: Defined all of Class of tokens in here
  */
 public enum TokenType {
     //Variable type
@@ -51,7 +47,7 @@ public enum TokenType {
     // >=
     GTOREQ,
     // ;
-    TERMINATE,
+    SEMILCOLON,
     // (
     LPAREN,
     // )

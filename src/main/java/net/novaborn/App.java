@@ -1,3 +1,5 @@
+package net.novaborn;
+
 /**
  * Created with IntelliJ IDEA
  * User: wangyong
