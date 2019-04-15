@@ -35,11 +35,12 @@ public class ExpToNfaHandler implements BaseHandler {
 
         //
         StateGroup stateGroup = this.handle(expression.toCharArray());
+        State start = stateGroup.getStartState();
         State end = stateGroup.getEndState();
         end.setIsAccpeted(true);
 
         // connect state        first ----> start------>end
-        nfa.addTransitionFunc(firstState, end, null);
+        nfa.addTransitionFunc(firstState, start, null);
         nfa.addAccpetStates(end);
         return this;
     }
@@ -61,7 +62,7 @@ public class ExpToNfaHandler implements BaseHandler {
                     nextChar = regularArray[i + 1];
                 }
                 if (thisChar != '(' && thisChar != ')' && thisChar != '|' && thisChar != '*') {
-                    if (nextChar == '(' || nextChar == ')' || nextChar == '|' || nextChar == '*') {
+                    if (nextChar != '(' && nextChar != ')' && nextChar != '|' && nextChar != '*') {
                         StateGroup stateGroup = handle(String.valueOf(regularArray[i]).toCharArray());
                         nfa.addTransitionFunc(end, stateGroup.getStartState(), null);
                         end = stateGroup.getEndState();

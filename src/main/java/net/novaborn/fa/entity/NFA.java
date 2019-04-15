@@ -4,10 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -60,7 +57,7 @@ public class NFA {
         return true;
     }
 
-    public class State {
+    public class State implements Comparable<State> {
         @Getter
         private Integer id;
         @Getter
@@ -78,6 +75,11 @@ public class NFA {
         }
 
         @Override
+        public int compareTo(State o) {
+            return this.getId().compareTo(o.getId());
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) {
                 return true;
@@ -89,6 +91,7 @@ public class NFA {
             return id.equals(state.id);
         }
 
+
         @Override
         public int hashCode() {
             return Objects.hash(id);
@@ -97,18 +100,18 @@ public class NFA {
 
     @Override
     public String toString() {
-        List<StringBuffer> lines = new ArrayList<>();
-        Map<State, List<Transition>> fromStateMap = this.getTransitionFuncs().stream()
-                .collect(Collectors.groupingBy(Transition::getFromState));
-        fromStateMap.forEach((state, funcs) -> {
-            if (lines.size() < (funcs.size() - 1) * 2 + 1) {
-                lines.add(new StringBuffer());
-            }
-            for (int i = 0; i < funcs.size(); i++) {
-                StringBuffer sf = lines.get(i);
-
-            }
+        StringBuffer line = new StringBuffer();
+        List<Transition> transitions = this.transitionFuncs;
+        transitions.stream().sorted(Comparator.comparing(Transition::getToState)).forEach(func -> {
+            line.append("S");
+            line.append(func.getFromState().getId());
+            line.append(" ---- ");
+            line.append(func.getCharacter());
+            line.append(" ---> ");
+            line.append("S");
+            line.append(func.getToState().getId());
+            line.append("\r\n");
         });
-        return String.join("\r\n", lines);
+        return line.toString();
     }
 }
