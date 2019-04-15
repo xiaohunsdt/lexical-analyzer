@@ -45,14 +45,14 @@ public class ExpToNfaHandler implements BaseHandler {
     }
 
     private StateGroup handle(char[] regularArray) {
-        State start = this.nfa.creatNewState();
-        State end = this.nfa.creatNewState();
         List<Character> subRegularArray = new ArrayList<>();
-
+        State start = null;
+        State end = null;
         //single character:  start1 ----- reg -----> end1
         if (regularArray.length == 1) {
+            start = this.nfa.creatNewState();
+            end = this.nfa.creatNewState();
             nfa.addTransitionFunc(start, end, regularArray[0]);
-            return new StateGroup(start, end);
         } else if (regularArray.length > 1) {
             for (int i = 0; i < regularArray.length; i++) {
                 char thisChar = regularArray[i];
@@ -61,24 +61,28 @@ public class ExpToNfaHandler implements BaseHandler {
                     nextChar = regularArray[i + 1];
                 }
                 if (thisChar != '(' && thisChar != ')' && thisChar != '|' && thisChar != '*') {
-                    if (nextChar != '(' && nextChar != ')' && nextChar != '|' && nextChar != '*') {
-                        StateGroup stateGroup = handle(String.valueOf(regularArray[i]).toCharArray());
+//                    if (nextChar != '(' && nextChar != ')' && nextChar != '|' && nextChar != '*') {
+//
+//                    }
+                    StateGroup stateGroup = handle(String.valueOf(regularArray[i]).toCharArray());
+                    if (end != null) {
                         nfa.addTransitionFunc(end, stateGroup.getStartState(), null);
-                        end = stateGroup.getEndState();
-                        continue;
+                    } else {
+                        start = stateGroup.getStartState();
                     }
+                    end = stateGroup.getEndState();
+                    continue;
                 }
             }
-            // user null to connect states
-            // start1--- a --->end1--- null --->start2---> b --->end2
-            char[] temp = new char[subRegularArray.size()];
-            for (int i = 0; i < temp.length; i++) {
-                temp[i] = subRegularArray.get(i);
-            }
-            StateGroup stateGroup = handle(temp);
-            //
-            nfa.addTransitionFunc(end, stateGroup.getStartState(), null);
-
+//            // user null to connect states
+//            // start1--- a --->end1--- null --->start2---> b --->end2
+//            char[] temp = new char[subRegularArray.size()];
+//            for (int i = 0; i < temp.length; i++) {
+//                temp[i] = subRegularArray.get(i);
+//            }
+//            StateGroup stateGroup = handle(temp);
+//            //
+//            nfa.addTransitionFunc(end, stateGroup.getStartState(), null);
         }
 
         return new StateGroup(start, end);
