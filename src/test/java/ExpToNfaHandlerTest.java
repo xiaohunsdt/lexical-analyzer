@@ -12,6 +12,6 @@ public class ExpToNfaHandlerTest {
 
     @Test
     public void handle() {
-        System.out.println(expToNfaHandler.setRegExpression("abcaada").handle().getResult());
+        System.out.println(expToNfaHandler.setRegExpression("abc").handle().getResult());
     }
 }

@@ -37,7 +37,6 @@ public class ExpToNfaHandler implements BaseHandler {
         StateGroup stateGroup = this.handle(expression.toCharArray());
         State start = stateGroup.getStartState();
         State end = stateGroup.getEndState();
-        end.setIsAccpeted(true);
 
         // connect state        first ----> start------>end
         nfa.addTransitionFunc(firstState, start, null);

@@ -4,8 +4,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 @Data
 public class NFA {
@@ -35,6 +37,7 @@ public class NFA {
 
     public boolean addAccpetStates(State accpetState) {
         try {
+            accpetState.setAccpeted(true);
             accpetStates.add(accpetState);
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,10 +65,10 @@ public class NFA {
         private Integer id;
         @Getter
         @Setter
-        private Boolean isStart;
+        private boolean isStart;
         @Getter
         @Setter
-        private Boolean isAccpeted;
+        private boolean isAccpeted;
 
         private State(Integer id) {
             this.id = id;
@@ -110,6 +113,9 @@ public class NFA {
             line.append(" ---> ");
             line.append("S");
             line.append(func.getToState().getId());
+            if (func.getToState().isAccpeted()) {
+                line.append("(end)");
+            }
             line.append("\r\n");
         });
         return line.toString();
