@@ -7,11 +7,11 @@ public class ExpToNfaHandlerTest {
 
     @Before
     public void before() {
-        expToNfaHandler = new ExpToNfaHandler("abc*");
+        expToNfaHandler = new ExpToNfaHandler();
     }
 
     @Test
     public void handle() {
-        expToNfaHandler.handle().getResult();
+        System.out.println(expToNfaHandler.setRegExpression("abcaada").handle().getResult());
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class Transition {
-    private State fromState;
-    private State toState;
-    private List<Character> characters;
+    private NFA.State fromState;
+    private NFA.State toState;
+    private Character character;
 }
