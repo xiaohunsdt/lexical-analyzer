@@ -34,7 +34,7 @@ public class ExpToNfaHandler implements BaseHandler {
         State firstState = this.nfa.getStartState();
 
         //
-        StateGroup stateGroup = this.handle(expression.toCharArray());
+        StateGroup stateGroup = this.handle(expression);
         State start = stateGroup.getStartState();
         State end = stateGroup.getEndState();
 
@@ -44,48 +44,65 @@ public class ExpToNfaHandler implements BaseHandler {
         return this;
     }
 
-    private StateGroup handle(char[] regularArray) {
-        List<Character> subRegularArray = new ArrayList<>();
+    private StateGroup handle(String regularStr) {
+        List<String> subRegularArray = new ArrayList<>();
         State start = null;
         State end = null;
         //single character:  start1 ----- reg -----> end1
-        if (regularArray.length == 1) {
+        if (regularStr.length() == 1) {
             start = this.nfa.creatNewState();
             end = this.nfa.creatNewState();
-            nfa.addTransitionFunc(start, end, regularArray[0]);
-        } else if (regularArray.length > 1) {
-            for (int i = 0; i < regularArray.length; i++) {
-                char thisChar = regularArray[i];
-                char nextChar = 0;
-                if (i < regularArray.length - 1) {
-                    nextChar = regularArray[i + 1];
-                }
-                if (thisChar != '(' && thisChar != ')' && thisChar != '|' && thisChar != '*') {
-//                    if (nextChar != '(' && nextChar != ')' && nextChar != '|' && nextChar != '*') {
-//
-//                    }
-                    StateGroup stateGroup = handle(String.valueOf(regularArray[i]).toCharArray());
-                    if (end != null) {
-                        nfa.addTransitionFunc(end, stateGroup.getStartState(), null);
-                    } else {
-                        start = stateGroup.getStartState();
-                    }
-                    end = stateGroup.getEndState();
+            nfa.addTransitionFunc(start, end, regularStr.charAt(0));
+            return new StateGroup(start, end);
+        }
+
+
+        char[] chars = regularStr.toCharArray();
+        String temp = null;
+        //catch () inner elements
+        int blockDepth = 0;
+        for (int i = 0; i < chars.length; i++) {
+            char thisChar = chars[i];
+
+            if (thisChar == ')') {
+                blockDepth--;
+                if (blockDepth == 0) {
+                    subRegularArray.add(temp);
+                    temp = null;
                     continue;
                 }
             }
-//            // user null to connect states
-//            // start1--- a --->end1--- null --->start2---> b --->end2
-//            char[] temp = new char[subRegularArray.size()];
-//            for (int i = 0; i < temp.length; i++) {
-//                temp[i] = subRegularArray.get(i);
-//            }
-//            StateGroup stateGroup = handle(temp);
-//            //
-//            nfa.addTransitionFunc(end, stateGroup.getStartState(), null);
+
+            if (blockDepth > 0) {
+                temp = temp.concat(String.valueOf(thisChar));
+                if(thisChar == '('){
+                    blockDepth++;
+                }
+            }else if (thisChar == '(') {
+                blockDepth++;
+                if (temp == null) {
+                    temp = new String();
+                }
+            } else if (thisChar == '|') {
+                subRegularArray.add(String.valueOf(thisChar));
+            } else if (thisChar == '*') {
+                subRegularArray.add(String.valueOf(thisChar));
+            } else {
+                subRegularArray.add(String.valueOf(thisChar));
+            }
         }
 
+        for (String str : subRegularArray) {
+            StateGroup stateGroup = handle(str);
+            if (end != null) {
+                nfa.addTransitionFunc(end, stateGroup.getStartState(), null);
+            } else {
+                start = stateGroup.getStartState();
+            }
+            end = stateGroup.getEndState();
+        }
         return new StateGroup(start, end);
+
     }
 
     @Override
