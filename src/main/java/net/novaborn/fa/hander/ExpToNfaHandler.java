@@ -75,10 +75,10 @@ public class ExpToNfaHandler implements BaseHandler {
 
             if (blockDepth > 0) {
                 temp = temp.concat(String.valueOf(thisChar));
-                if(thisChar == '('){
+                if (thisChar == '(') {
                     blockDepth++;
                 }
-            }else if (thisChar == '(') {
+            } else if (thisChar == '(') {
                 blockDepth++;
                 if (temp == null) {
                     temp = new String();
@@ -92,17 +92,91 @@ public class ExpToNfaHandler implements BaseHandler {
             }
         }
 
+        List<Object> actionChain = new ArrayList<>();
         for (String str : subRegularArray) {
-            StateGroup stateGroup = handle(str);
-            if (end != null) {
-                nfa.addTransitionFunc(end, stateGroup.getStartState(), null);
+            if (!str.equals("|") && !str.equals("*")) {
+                StateGroup stateGroup = handle(str);
+                actionChain.add(stateGroup);
             } else {
-                start = stateGroup.getStartState();
+                actionChain.add(str);
             }
-            end = stateGroup.getEndState();
+        }
+        for (int x = 0; x < actionChain.size(); x++) {
+            for (int i = 0; i < actionChain.size(); i++) {
+                Object thisElement = actionChain.get(i);
+                Object previousStateGroup;
+                Object nextStateGroup;
+                int y = 0;
+                do {
+                    if (i - ++y >= 0) {
+                        previousStateGroup = actionChain.get(i - y);
+                    } else {
+                        previousStateGroup = null;
+                    }
+                } while (previousStateGroup != null && !(previousStateGroup instanceof StateGroup));
+
+                y = 0;
+                do {
+                    if (i + ++y < actionChain.size()) {
+                        nextStateGroup = actionChain.get(i + y);
+                    } else {
+                        nextStateGroup = null;
+                    }
+                } while (nextStateGroup != null && !(nextStateGroup instanceof StateGroup));
+
+                //------------------------------------------
+                if (thisElement instanceof String) {
+                    if (thisElement.equals("|")) {
+                        State selectStartState = this.nfa.creatNewState();
+                        State selectEndState = this.nfa.creatNewState();
+                        StateGroup selectStateGroup = new StateGroup(selectStartState, selectEndState);
+                        this.nfa.addTransitionFunc(selectStartState, ((StateGroup) previousStateGroup).getStartState(), null);
+                        this.nfa.addTransitionFunc(selectStartState, ((StateGroup) nextStateGroup).getStartState(), null);
+                        this.nfa.addTransitionFunc(((StateGroup) previousStateGroup).getEndState(), selectEndState, null);
+                        this.nfa.addTransitionFunc(((StateGroup) nextStateGroup).getEndState(), selectEndState, null);
+                        actionChain.add(i - 1, selectStateGroup);
+                        actionChain.remove(i);
+                        actionChain.remove(i);
+                        actionChain.remove(i);
+                        break;
+                    } else if (thisElement.equals("*")) {
+                        State previousStart = ((StateGroup) previousStateGroup).getStartState();
+                        State previousEnd = ((StateGroup) previousStateGroup).getEndState();
+                        State jumpStartState = this.nfa.creatNewState();
+                        State jumpEndState = this.nfa.creatNewState();
+                        StateGroup jumpStateGroup = new StateGroup(jumpStartState, jumpEndState);
+                        this.nfa.addTransitionFunc(previousEnd, previousStart, null);
+                        this.nfa.addTransitionFunc(previousEnd, jumpEndState, null);
+                        this.nfa.addTransitionFunc(jumpStartState, jumpEndState, null);
+                        actionChain.add(i - 1, jumpStateGroup);
+                        actionChain.remove(i);
+                        actionChain.remove(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        for (int i = 0; i < actionChain.size(); i++) {
+            StateGroup thisStateGroup = (StateGroup) actionChain.get(i);
+            StateGroup nextStateGroup = null;
+
+            if (i + 1 < actionChain.size()) {
+                nextStateGroup = (StateGroup) actionChain.get(i + 1);
+            }
+
+            if (start == null) {
+                start = thisStateGroup.getStartState();
+                end = thisStateGroup.getEndState();
+            }
+
+            if (nextStateGroup != null) {
+                this.nfa.addTransitionFunc(end, nextStateGroup.getStartState(), null);
+                end = nextStateGroup.getEndState();
+            }
         }
         return new StateGroup(start, end);
-
     }
 
     @Override
