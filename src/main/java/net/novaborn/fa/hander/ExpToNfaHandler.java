@@ -64,7 +64,7 @@ public class ExpToNfaHandler implements BaseHandler {
         for (int i = 0; i < chars.length; i++) {
             char thisChar = chars[i];
 
-            if (thisChar == ')') {
+            if (thisChar == ')' || thisChar == ']') {
                 blockDepth--;
                 if (blockDepth == 0) {
                     subRegularArray.add(temp);
@@ -75,14 +75,23 @@ public class ExpToNfaHandler implements BaseHandler {
 
             if (blockDepth > 0) {
                 temp = temp.concat(String.valueOf(thisChar));
-                if (thisChar == '(') {
+                if (thisChar == '(' || thisChar == '[') {
                     blockDepth++;
                 }
-            } else if (thisChar == '(') {
+                continue;
+            }
+
+            if (thisChar == '(') {
                 blockDepth++;
                 if (temp == null) {
                     temp = new String();
                 }
+            } else if (thisChar == '[') {
+                blockDepth++;
+                if (temp == null) {
+                    temp = new String();
+                }
+                temp = temp.concat(String.valueOf(thisChar));
             } else if (thisChar == '|') {
                 subRegularArray.add(String.valueOf(thisChar));
             } else if (thisChar == '*') {
@@ -94,7 +103,7 @@ public class ExpToNfaHandler implements BaseHandler {
 
         List<Object> actionChain = new ArrayList<>();
         for (String str : subRegularArray) {
-            if (!str.equals("|") && !str.equals("*")) {
+            if (!str.equals("|") && !str.equals("*") && !str.equals("?")) {
                 StateGroup stateGroup = handle(str);
                 actionChain.add(stateGroup);
             } else {
@@ -129,6 +138,7 @@ public class ExpToNfaHandler implements BaseHandler {
                     if (thisElement.equals("|")) {
                         State selectStartState = this.nfa.creatNewState();
                         State selectEndState = this.nfa.creatNewState();
+
                         StateGroup selectStateGroup = new StateGroup(selectStartState, selectEndState);
                         this.nfa.addTransitionFunc(selectStartState, ((StateGroup) previousStateGroup).getStartState(), null);
                         this.nfa.addTransitionFunc(selectStartState, ((StateGroup) nextStateGroup).getStartState(), null);
@@ -140,15 +150,31 @@ public class ExpToNfaHandler implements BaseHandler {
                         actionChain.remove(i);
                         break;
                     } else if (thisElement.equals("*")) {
-                        State previousStart = ((StateGroup) previousStateGroup).getStartState();
-                        State previousEnd = ((StateGroup) previousStateGroup).getEndState();
                         State jumpStartState = this.nfa.creatNewState();
                         State jumpEndState = this.nfa.creatNewState();
+                        State previousStart = ((StateGroup) previousStateGroup).getStartState();
+                        State previousEnd = ((StateGroup) previousStateGroup).getEndState();
+
                         StateGroup jumpStateGroup = new StateGroup(jumpStartState, jumpEndState);
                         this.nfa.addTransitionFunc(previousEnd, previousStart, null);
                         this.nfa.addTransitionFunc(previousEnd, jumpEndState, null);
                         this.nfa.addTransitionFunc(jumpStartState, jumpEndState, null);
+                        this.nfa.addTransitionFunc(jumpStartState, previousStart, null);
                         actionChain.add(i - 1, jumpStateGroup);
+                        actionChain.remove(i);
+                        actionChain.remove(i);
+                        break;
+                    } else if (thisElement.equals("?")) {
+                        State maybeStartState = this.nfa.creatNewState();
+                        State maybeEndState = this.nfa.creatNewState();
+                        State previousStart = ((StateGroup) previousStateGroup).getStartState();
+                        State previousEnd = ((StateGroup) previousStateGroup).getEndState();
+
+                        StateGroup maybeStateGroup = new StateGroup(maybeStartState, maybeEndState);
+                        this.nfa.addTransitionFunc(previousEnd, maybeEndState, null);
+                        this.nfa.addTransitionFunc(maybeStartState, previousStart, null);
+                        this.nfa.addTransitionFunc(maybeStartState, maybeEndState, null);
+                        actionChain.add(i - 1, maybeStateGroup);
                         actionChain.remove(i);
                         actionChain.remove(i);
                         break;

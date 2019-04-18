@@ -59,5 +59,7 @@ public enum TokenType {
     // ,
     COMMA,
     // \t \n ' '
-    WHITESPACE
+    WHITESPACE,
+    // //
+    NOTE;
 }
