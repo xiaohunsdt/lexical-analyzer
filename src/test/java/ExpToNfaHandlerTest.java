@@ -12,6 +12,6 @@ public class ExpToNfaHandlerTest {
 
     @Test
     public void handle() {
-        System.out.println(expToNfaHandler.setRegExpression("-?[1-9][0-9]*").handle().getResult());
+        System.out.println(expToNfaHandler.setRegExpression("-?[1-3][0-3]*").handle().getResult());
     }
 }
