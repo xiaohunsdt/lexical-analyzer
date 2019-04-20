@@ -18,7 +18,6 @@ public class NFA {
     private List<State> accpetStates = new ArrayList<>();
     List<Transition> transitionFuncs = new ArrayList<>();
 
-
     public State creatNewState() {
         State state = new State(index++);
         this.addState(state);
@@ -105,7 +104,7 @@ public class NFA {
     public String toString() {
         StringBuffer line = new StringBuffer();
         List<Transition> transitions = this.transitionFuncs;
-        transitions.stream().sorted(Comparator.comparing(Transition::getToState)).forEach(func -> {
+        transitions.stream().sorted(Comparator.comparing(Transition::getFromState)).forEach(func -> {
             line.append("S");
             line.append(func.getFromState().getId());
             line.append(" ---- ");

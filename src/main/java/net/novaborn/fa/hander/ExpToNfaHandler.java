@@ -20,7 +20,6 @@ public class ExpToNfaHandler implements BaseHandler {
         nfa = new NFA();
         State startState = this.nfa.creatNewState();
         nfa.setStartState(startState);
-        nfa.addState(startState);
     }
 
     public BaseHandler setRegExpression(String expression) {
