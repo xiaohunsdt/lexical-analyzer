@@ -56,7 +56,6 @@ public class ExpToNfaHandler implements BaseHandler {
             return new StateGroup(start, end);
         }
 
-
         char[] chars = regularStr.toCharArray();
         String temp = null;
         //catch () inner elements
@@ -66,6 +65,9 @@ public class ExpToNfaHandler implements BaseHandler {
 
             if (thisChar == ')' || thisChar == ']') {
                 blockDepth--;
+                if (thisChar == ']') {
+                    temp = temp.concat(String.valueOf(thisChar));
+                }
                 if (blockDepth == 0) {
                     subRegularArray.add(temp);
                     temp = null;
@@ -103,13 +105,16 @@ public class ExpToNfaHandler implements BaseHandler {
 
         List<Object> actionChain = new ArrayList<>();
         for (String str : subRegularArray) {
-            if (!str.equals("|") && !str.equals("*") && !str.equals("?")) {
+            if (str.indexOf("[") == 0 && str.indexOf("]") == str.length() - 1) {
+                actionChain.add(handleCharacterSet(str));
+            } else if (!str.equals("|") && !str.equals("*") && !str.equals("?")) {
                 StateGroup stateGroup = handle(str);
                 actionChain.add(stateGroup);
             } else {
                 actionChain.add(str);
             }
         }
+
         for (int x = 0; x < actionChain.size(); x++) {
             for (int i = 0; i < actionChain.size(); i++) {
                 Object thisElement = actionChain.get(i);
@@ -203,6 +208,46 @@ public class ExpToNfaHandler implements BaseHandler {
             }
         }
         return new StateGroup(start, end);
+    }
+
+    private StateGroup handleCharacterSet(String characterSet) {
+        State selectStartState = this.nfa.creatNewState();
+        State selectEndState = this.nfa.creatNewState();
+        char[] chars = characterSet.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char thisChar = chars[i];
+            char secondChar = 0;
+            char thirdChar = 0;
+            if (i + 1 < chars.length) {
+                secondChar = chars[i + 1];
+            }
+            if (i + 2 < chars.length) {
+                thirdChar = chars[i + 2];
+            }
+            if (thisChar == '[' || thisChar == ']') {
+                continue;
+            }
+
+            if (secondChar == '-') {
+                for (int j = thisChar; j <= thirdChar; j++) {
+                    State start = this.nfa.creatNewState();
+                    State end = this.nfa.creatNewState();
+                    this.nfa.addTransitionFunc(start, end, (char) j);
+                    this.nfa.addTransitionFunc(selectStartState, start, null);
+                    this.nfa.addTransitionFunc(end, selectEndState, null);
+                }
+
+                i += 2;
+            } else {
+                State start = this.nfa.creatNewState();
+                State end = this.nfa.creatNewState();
+                this.nfa.addTransitionFunc(start, end, thisChar);
+
+                this.nfa.addTransitionFunc(selectStartState, start, null);
+                this.nfa.addTransitionFunc(end, selectEndState, null);
+            }
+        }
+        return new StateGroup(selectStartState, selectEndState);
     }
 
     @Override
