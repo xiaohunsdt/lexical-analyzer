@@ -51,7 +51,7 @@ public class NfaToDfaHandler implements BaseHandler {
                         ClosureState newQ = epsClosure(transition.getToState());
                         //add new transition for dfa;
                         dfa.addTransitionFunc(q.getState(), newQ.getState(), transition.getCharacter());
-                        if (!closureStates.contains(newQ)){
+                        if (!closureStates.contains(newQ)) {
                             closureStates.add(newQ);
                             queue.add(newQ);
                         }
@@ -77,8 +77,8 @@ public class NfaToDfaHandler implements BaseHandler {
         } else {
             State newState = dfa.creatNewState();
             //make the new state be accpet state in dfa if this epsilon state list have accpet state of nfa
-            for (State epsilonState : stateList){
-                if(nfa.getAccpetStates().contains(epsilonState)){
+            for (State epsilonState : stateList) {
+                if (nfa.getAccpetStates().contains(epsilonState)) {
                     dfa.addAccpetState(newState);
                 }
             }
@@ -120,7 +120,7 @@ public class NfaToDfaHandler implements BaseHandler {
 
     @Data
     @AllArgsConstructor
-    class ClosureState implements Comparable<ClosureState>{
+    class ClosureState implements Comparable<ClosureState> {
         /**
          * new state of stateList for dfa!
          * ex) q0 q1 q2
