@@ -9,12 +9,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Created with IntelliJ IDEA
+ * User: wangyong
+ * Date: 2019-04-10
+ * Time: 13:34
+ * Description:
+ */
 @Data
 public class NFA {
     //id of state, auto increment when create a new state
     private int index;
-    private List<State> stetes = new ArrayList<>();
     private State startState;
+    private List<State> stetes = new ArrayList<>();
     private List<State> accpetStates = new ArrayList<>();
     List<Transition> transitionFuncs = new ArrayList<>();
 
@@ -34,7 +41,7 @@ public class NFA {
         return true;
     }
 
-    public boolean addAccpetStates(State accpetState) {
+    public boolean addAccpetState(State accpetState) {
         try {
             accpetState.setAccpeted(true);
             accpetStates.add(accpetState);
@@ -46,6 +53,9 @@ public class NFA {
     }
 
     public boolean addTransitionFunc(State from, State to, Character character) {
+        if(character == null){
+            character = 'ε';
+        }
         try {
             Transition transitionFunc = new Transition();
             transitionFunc.setFromState(from);
@@ -57,6 +67,37 @@ public class NFA {
             return false;
         }
         return true;
+    }
+
+    /**
+     * return a list of transition
+     * @param fromState
+     * @return
+     */
+    public List<Transition> getTransition(State fromState) {
+        List<Transition> results = new ArrayList<>();
+        for (Transition transition : transitionFuncs) {
+            if (transition.getFromState() == fromState) {
+                results.add(transition);
+            }
+        }
+        return results;
+    }
+
+    /**
+     * return a epsilon state from a state by transition
+     *
+     * @param fromState
+     * @return
+     */
+    public List<State> getNextEpsilonState(State fromState) {
+        List<State> results = new ArrayList<>();
+        for (Transition transition : transitionFuncs) {
+            if (transition.getFromState() == fromState && transition.getCharacter().equals('ε')) {
+                results.add(transition.getToState());
+            }
+        }
+        return results;
     }
 
     public class State implements Comparable<State> {
@@ -92,7 +133,6 @@ public class NFA {
             State state = (State) o;
             return id.equals(state.id);
         }
-
 
         @Override
         public int hashCode() {

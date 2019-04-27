@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * Created with IntelliJ IDEA
+ * User: wangyong
+ * Date: 2019-04-10
+ * Time: 13:34
+ * Description:
+ */
 public class ExpToNfaHandler implements BaseHandler {
     private String expression;
 
@@ -39,7 +46,7 @@ public class ExpToNfaHandler implements BaseHandler {
 
         // connect state        first ----> start------>end
         nfa.addTransitionFunc(firstState, start, null);
-        nfa.addAccpetStates(end);
+        nfa.addAccpetState(end);
         return this;
     }
 
