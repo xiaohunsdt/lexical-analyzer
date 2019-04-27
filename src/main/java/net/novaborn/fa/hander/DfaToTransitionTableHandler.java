@@ -31,7 +31,7 @@ public class DfaToTransitionTableHandler implements BaseHandler {
                 .map(Transition::getCharacter)
                 .collect(Collectors.toSet());
         Integer[] accpetedIds = dfa.getStetes().stream()
-                .filter(state -> state.isAccpeted())
+                .filter(NFA.State::isAccpeted)
                 .map(NFA.State::getId)
                 .toArray(Integer[]::new);
         int rowCount = dfa.getStetes().size();
