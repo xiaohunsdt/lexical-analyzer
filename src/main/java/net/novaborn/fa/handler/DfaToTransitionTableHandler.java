@@ -1,8 +1,7 @@
-package net.novaborn.fa.hander;
+package net.novaborn.fa.handler;
 
 import net.novaborn.fa.entity.*;
 
-import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 

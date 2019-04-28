@@ -1,4 +1,4 @@
-package net.novaborn.fa.hander;
+package net.novaborn.fa.handler;
 
 /**
  * Created with IntelliJ IDEA

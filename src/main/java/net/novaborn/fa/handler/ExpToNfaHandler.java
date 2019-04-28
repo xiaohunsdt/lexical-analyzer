@@ -1,10 +1,8 @@
-package net.novaborn.fa.hander;
+package net.novaborn.fa.handler;
 
 import net.novaborn.fa.entity.NFA;
 import net.novaborn.fa.entity.State;
 import net.novaborn.fa.entity.StateGroup;
-import net.novaborn.regular.TokenExpressionList;
-import net.novaborn.regular.entity.TokenExpression;
 
 import java.util.ArrayList;
 import java.util.List;

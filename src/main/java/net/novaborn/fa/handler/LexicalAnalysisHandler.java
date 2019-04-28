@@ -1,4 +1,4 @@
-package net.novaborn.fa.hander;
+package net.novaborn.fa.handler;
 
 import net.novaborn.entity.Token;
 import net.novaborn.entity.TokenType;

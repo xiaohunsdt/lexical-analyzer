@@ -1,13 +1,7 @@
 package net.novaborn;
 
 import net.novaborn.entity.Token;
-import net.novaborn.fa.entity.DFA;
-import net.novaborn.fa.entity.NFA;
-import net.novaborn.fa.entity.TransitionTable;
-import net.novaborn.fa.hander.DfaToTransitionTableHandler;
-import net.novaborn.fa.hander.ExpToNfaHandler;
-import net.novaborn.fa.hander.LexicalAnalysisHandler;
-import net.novaborn.fa.hander.NfaToDfaHandler;
+import net.novaborn.fa.handler.LexicalAnalysisHandler;
 
 import java.io.*;
 import java.util.List;
