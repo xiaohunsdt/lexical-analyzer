@@ -21,11 +21,11 @@ public class TokenExpressionList {
     static {
         expressions.add(new TokenExpression(TokenType.VARTYPE,"(int)|(INT)|(char)|(CHAR)"));
         expressions.add(new TokenExpression(TokenType.INTEGER,"-?[1-9][0-9]*"));
-        expressions.add(new TokenExpression(TokenType.STRING,"\"[A-Za-z0-9\t\n ]*\""));
         expressions.add(new TokenExpression(TokenType.IF,"(if)|(IF)"));
         expressions.add(new TokenExpression(TokenType.ELSE,"(else)|(ELSE)"));
         expressions.add(new TokenExpression(TokenType.WHILE,"(while)|(WHILE)"));
         expressions.add(new TokenExpression(TokenType.RETURN,"(return)|(RETURN)"));
+        expressions.add(new TokenExpression(TokenType.STRING,"\"[A-Za-z0-9\t\n ]*\""));
         expressions.add(new TokenExpression(TokenType.ID,"[A-Za-z0-9][A-Za-z0-9]*"));
         expressions.add(new TokenExpression(TokenType.ADD,"+"));
         expressions.add(new TokenExpression(TokenType.MIN,"-"));
