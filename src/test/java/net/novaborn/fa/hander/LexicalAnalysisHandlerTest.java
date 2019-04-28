@@ -18,7 +18,7 @@ public class LexicalAnalysisHandlerTest {
         DfaToTransitionTableHandler dfaToTransitionTableHandler = new DfaToTransitionTableHandler(dfa);
         TransitionTable transitionTable = (TransitionTable)dfaToTransitionTableHandler.handle().getResult();
 
-        LexicalAnalysisHandler lexicalAnalysisHandler = new LexicalAnalysisHandler(transitionTable);
+        LexicalAnalysisHandler lexicalAnalysisHandler = new LexicalAnalysisHandler();
         System.out.println(lexicalAnalysisHandler.setOriginStr("int abc;").handle().getResult());
     }
 }
