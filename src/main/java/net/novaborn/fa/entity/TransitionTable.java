@@ -45,9 +45,28 @@ public class TransitionTable {
     public int getNextState(int stateId, char keyword) {
         int columnIndex = getCharacterIndex(keyword);
         if (columnIndex == -1) {
-            throw new IllegalArgumentException("keyword have not exist");
+//            throw new IllegalArgumentException("keyword have not exist");
+            return -1;
         }
         int result = Optional.ofNullable(transitionTable[stateId][columnIndex]).orElse(-1);
         return result;
+    }
+
+    /**
+     * determine whether the specified state id is accpeted id
+     * @param stateId
+     * @return
+     */
+    public boolean isAccpetedId(int stateId){
+        if(stateId == -1){
+            return false;
+        }
+
+        for (int i = 0; i < accpetedIds.length; i++) {
+            if(accpetedIds[i] == stateId){
+                return true;
+            }
+        }
+        return false;
     }
 }
