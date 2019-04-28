@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 public class Transition {
-    private NFA.State fromState;
-    private NFA.State toState;
+    private State fromState;
+    private State toState;
     private Character character;
 }

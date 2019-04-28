@@ -21,9 +21,15 @@ import java.util.List;
  */
 public class App {
     public static void main(String[] args) throws IOException {
+        String fileName;
         if(args.length > 1){
             throw new IllegalArgumentException();
+        }else if(args.length == 1){
+            fileName = args[0];
+        }else {
+            fileName = "C:\\Users\\Administrator.C3CNPVINO5W5F1W\\Desktop\\lexical.c";
         }
+
 
         ExpToNfaHandler expToNfaHandler = new ExpToNfaHandler();
         NFA nfa = (NFA) expToNfaHandler.handle().getResult();
@@ -37,10 +43,9 @@ public class App {
         LexicalAnalysisHandler lexicalAnalysisHandler = new LexicalAnalysisHandler(transitionTable);
 
         String tempString;
-        BufferedReader reader = new BufferedReader(new FileReader(new File(args[0])));
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
         while ((tempString = reader.readLine()) != null) {
             lexicalAnalysisHandler.setOriginStr(tempString).handle();
-
         }
 
         List<Token> tokens = (List<Token>)lexicalAnalysisHandler.getResult();

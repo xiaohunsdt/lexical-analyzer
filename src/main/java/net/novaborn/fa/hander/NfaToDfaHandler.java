@@ -1,11 +1,6 @@
 package net.novaborn.fa.hander;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import net.novaborn.fa.entity.DFA;
-import net.novaborn.fa.entity.NFA;
-import net.novaborn.fa.entity.NFA.State;
-import net.novaborn.fa.entity.Transition;
+import net.novaborn.fa.entity.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -79,7 +74,7 @@ public class NfaToDfaHandler implements BaseHandler {
             //make the new state be accpet state in dfa if this epsilon state list have accpet state of nfa
             for (State epsilonState : stateList) {
                 if (nfa.getAccpetStates().contains(epsilonState)) {
-                    if (newState.getTokenType() != null){
+                    if (newState.getTokenType() != null) {
                         throw new IllegalStateException();
                     }
                     newState.setTokenType(epsilonState.getTokenType());
@@ -122,36 +117,6 @@ public class NfaToDfaHandler implements BaseHandler {
         return list2.containsAll(list1);
     }
 
-    @Data
-    @AllArgsConstructor
-    class ClosureState implements Comparable<ClosureState> {
-        /**
-         * new state of stateList for dfa!
-         * ex) q0 q1 q2
-         */
-        State state;
-        /**
-         * ex) q0 -> {s0}, q1 -> {s1,s2,s3}
-         */
-        Set<State> stateList;
-
-        @Override
-        public int compareTo(ClosureState o) {
-            return this.getState().compareTo(o.getState());
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            ClosureState closureState = (ClosureState) o;
-            return this.getState().equals(closureState.getState());
-        }
-    }
 
     @Override
     public Object getResult() {

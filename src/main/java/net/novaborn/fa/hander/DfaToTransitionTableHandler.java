@@ -1,9 +1,6 @@
 package net.novaborn.fa.hander;
 
-import net.novaborn.fa.entity.DFA;
-import net.novaborn.fa.entity.NFA;
-import net.novaborn.fa.entity.Transition;
-import net.novaborn.fa.entity.TransitionTable;
+import net.novaborn.fa.entity.*;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -30,18 +27,21 @@ public class DfaToTransitionTableHandler implements BaseHandler {
                 .filter(transition -> !transition.getCharacter().equals('ε'))
                 .map(Transition::getCharacter)
                 .collect(Collectors.toSet());
-        NFA.State[] accpetedIds = dfa.getAccpetStates().toArray(NFA.State[]::new);
+        State[] accpetedIds = dfa.getAccpetStates().toArray(new State[0]);
         int rowCount = dfa.getStetes().size();
         int columnCount = keywords.size();
 
         transitionTable = new TransitionTable();
-        transitionTable.setKeywordTable(keywords.toArray(Character[]::new));
+        transitionTable.setKeywordTable(keywords.toArray(new Character[0]));
         transitionTable.setTransitionTable(new Integer[rowCount][columnCount]);
         transitionTable.setAccpeteds(accpetedIds);
 
         for (Transition transition : dfa.getTransitionFuncs()){
             int row = transition.getFromState().getId();
             int column = transitionTable.getCharacterIndex(transition.getCharacter());
+            if(transitionTable.getTransitionTable()[row][column] != null){
+                throw new IllegalStateException();
+            }
             transitionTable.getTransitionTable()[row][column] = transition.getToState().getId();
         }
         return this;

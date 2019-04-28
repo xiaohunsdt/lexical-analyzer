@@ -2,6 +2,7 @@ package net.novaborn.fa.hander;
 
 import net.novaborn.entity.Token;
 import net.novaborn.fa.entity.NFA;
+import net.novaborn.fa.entity.State;
 import net.novaborn.fa.entity.TransitionTable;
 
 import java.nio.CharBuffer;
@@ -28,14 +29,12 @@ public class LexicalAnalysisHandler implements BaseHandler {
 
     @Override
     public BaseHandler handle() {
-        //init state id is 0
-
-
         //Longest matching algorithm by stack
         Stack<Integer> stack = new Stack<>();
         CharBuffer byteBuffer = CharBuffer.allocate(originStr.length()).put(originStr);
         byteBuffer.flip();
         while (byteBuffer.position() < byteBuffer.limit()) {
+            //init state id is 0
             int stateId = 0;
             byteBuffer.mark();
             while (stateId != -1 && byteBuffer.position() < byteBuffer.limit()) {
@@ -61,7 +60,7 @@ public class LexicalAnalysisHandler implements BaseHandler {
                 }
             }
 
-            NFA.State accpetedState = transitionTable.isAccpetedId(stateId);
+            State accpetedState = transitionTable.isAccpetedId(stateId);
             if (accpetedState != null) {
                 int position = byteBuffer.position();
                 int originPosition = byteBuffer.reset().position();

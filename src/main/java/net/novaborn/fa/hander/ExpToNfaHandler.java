@@ -1,7 +1,7 @@
 package net.novaborn.fa.hander;
 
 import net.novaborn.fa.entity.NFA;
-import net.novaborn.fa.entity.NFA.State;
+import net.novaborn.fa.entity.State;
 import net.novaborn.fa.entity.StateGroup;
 import net.novaborn.regular.TokenExpressionList;
 import net.novaborn.regular.entity.TokenExpression;

@@ -13,6 +13,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class StateGroup {
-    private NFA.State startState;
-    private NFA.State endState;
+    private State startState;
+    private State endState;
 }
