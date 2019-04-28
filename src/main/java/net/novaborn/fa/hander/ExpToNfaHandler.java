@@ -3,6 +3,8 @@ package net.novaborn.fa.hander;
 import net.novaborn.fa.entity.NFA;
 import net.novaborn.fa.entity.NFA.State;
 import net.novaborn.fa.entity.StateGroup;
+import net.novaborn.regular.TokenExpressionList;
+import net.novaborn.regular.entity.TokenExpression;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +41,24 @@ public class ExpToNfaHandler implements BaseHandler {
         //conversion reg to states of nfa
         State firstState = this.nfa.getStartState();
 
-        //
-        StateGroup stateGroup = this.handle(expression);
-        State start = stateGroup.getStartState();
-        State end = stateGroup.getEndState();
+        for (TokenExpression tokenExpression: TokenExpressionList.getExpressions()){
+            //
+            StateGroup stateGroup = this.handle(tokenExpression.getExpression());
+            State start = stateGroup.getStartState();
+            State end = stateGroup.getEndState();
+            end.setTokenType(tokenExpression.getType());
+            // connect state        first ----> start------>end
+            nfa.addTransitionFunc(firstState, start, null);
+            nfa.addAccpetState(end);
+        }
+//        StateGroup stateGroup = this.handle(TokenExpressionList.getExpressions().get(0).getExpression());
+//        State start = stateGroup.getStartState();
+//        State end = stateGroup.getEndState();
+//        end.setTokenType(TokenExpressionList.getExpressions().get(0).getType());
+//        // connect state        first ----> start------>end
+//        nfa.addTransitionFunc(firstState, start, null);
+//        nfa.addAccpetState(end);
 
-        // connect state        first ----> start------>end
-        nfa.addTransitionFunc(firstState, start, null);
-        nfa.addAccpetState(end);
         return this;
     }
 

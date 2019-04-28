@@ -30,17 +30,14 @@ public class DfaToTransitionTableHandler implements BaseHandler {
                 .filter(transition -> !transition.getCharacter().equals('ε'))
                 .map(Transition::getCharacter)
                 .collect(Collectors.toSet());
-        Integer[] accpetedIds = dfa.getStetes().stream()
-                .filter(NFA.State::isAccpeted)
-                .map(NFA.State::getId)
-                .toArray(Integer[]::new);
+        NFA.State[] accpetedIds = dfa.getAccpetStates().toArray(NFA.State[]::new);
         int rowCount = dfa.getStetes().size();
         int columnCount = keywords.size();
 
         transitionTable = new TransitionTable();
         transitionTable.setKeywordTable(keywords.toArray(Character[]::new));
         transitionTable.setTransitionTable(new Integer[rowCount][columnCount]);
-        transitionTable.setAccpetedIds(accpetedIds);
+        transitionTable.setAccpeteds(accpetedIds);
 
         for (Transition transition : dfa.getTransitionFuncs()){
             int row = transition.getFromState().getId();

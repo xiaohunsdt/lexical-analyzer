@@ -15,7 +15,7 @@ import java.util.Optional;
 public class TransitionTable {
     private Integer[][] transitionTable;
     private Character[] keywordTable;
-    private Integer[] accpetedIds;
+    private NFA.State[] accpeteds;
 
     /**
      * get index of specific char in keyword table
@@ -54,19 +54,25 @@ public class TransitionTable {
 
     /**
      * determine whether the specified state id is accpeted id
+     *
      * @param stateId
      * @return
      */
-    public boolean isAccpetedId(int stateId){
-        if(stateId == -1){
-            return false;
+    public NFA.State isAccpetedId(int stateId) {
+        if (stateId == -1) {
+            return null;
         }
 
-        for (int i = 0; i < accpetedIds.length; i++) {
-            if(accpetedIds[i] == stateId){
-                return true;
+        for (int i = 0; i < accpeteds.length; i++) {
+            if (accpeteds[i].getId() == stateId) {
+                return accpeteds[i];
             }
         }
-        return false;
+        return null;
     }
+
+//    @Override
+//    public String toString() {
+//        StringBuffer sf = new StringBuffer();
+//    }
 }

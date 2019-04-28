@@ -3,6 +3,7 @@ package net.novaborn.fa.entity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import net.novaborn.entity.TokenType;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -103,12 +104,12 @@ public class NFA {
     public class State implements Comparable<State> {
         @Getter
         private Integer id;
-        @Getter
-        @Setter
+        @Getter @Setter
         private boolean isStart;
-        @Getter
-        @Setter
+        @Getter @Setter
         private boolean isAccpeted;
+        @Getter @Setter
+        private TokenType tokenType;
 
         private State(Integer id) {
             this.id = id;

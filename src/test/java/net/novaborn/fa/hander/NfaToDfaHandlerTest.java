@@ -9,7 +9,7 @@ public class NfaToDfaHandlerTest {
     @Test
     public void handle() {
         ExpToNfaHandler expToNfaHandler = new ExpToNfaHandler();
-        NFA nfa = (NFA) expToNfaHandler.setRegExpression("a(b|c)*").handle().getResult();
+        NFA nfa = (NFA) expToNfaHandler.handle().getResult();
 
         NfaToDfaHandler nfaToDfaHandler = new NfaToDfaHandler(nfa);
         System.out.println(nfaToDfaHandler.handle().getResult());
