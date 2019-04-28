@@ -4,7 +4,7 @@ package net.novaborn.entity;
  * Created with IntelliJ IDEA
  * User: wangyong
  * Date: 2019-04-10
- * Time: 13:38
+ * Time: 10:38
  * Description: Defined all of Class of tokens in here
  */
 public enum TokenType {

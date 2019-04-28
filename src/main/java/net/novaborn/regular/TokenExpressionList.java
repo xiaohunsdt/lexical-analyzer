@@ -7,6 +7,13 @@ import net.novaborn.regular.entity.TokenExpression;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created with IntelliJ IDEA
+ * User: wangyong
+ * Date: 2019-04-11
+ * Time: 14:20
+ * Description:
+ */
 public class TokenExpressionList {
     @Getter
     static private final List<TokenExpression> expressions = new ArrayList<>();

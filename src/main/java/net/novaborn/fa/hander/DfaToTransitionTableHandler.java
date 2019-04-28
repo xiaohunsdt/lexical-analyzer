@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Created with IntelliJ IDEA
  * User: wangyong
  * Date: 2019-04-27
- * Time: 13:34
+ * Time: 14:35
  * Description:
  */
 public class DfaToTransitionTableHandler implements BaseHandler {
