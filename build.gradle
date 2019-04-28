@@ -1,16 +1,21 @@
 plugins {
     id 'java'
-    id 'application'
     id 'idea'
 }
 
 group 'net.novaborn'
 version '1.0-SNAPSHOT'
 
-mainClassName = 'net.novaborn.App'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'net.novaborn.App'
+    }
+}
 
 repositories {
     mavenCentral()

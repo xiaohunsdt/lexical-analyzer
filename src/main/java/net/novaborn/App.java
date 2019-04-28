@@ -30,17 +30,7 @@ public class App {
             fileName = "C:\\Users\\Administrator.C3CNPVINO5W5F1W\\Desktop\\lexical.c";
         }
 
-
-        ExpToNfaHandler expToNfaHandler = new ExpToNfaHandler();
-        NFA nfa = (NFA) expToNfaHandler.handle().getResult();
-
-        NfaToDfaHandler nfaToDfaHandler = new NfaToDfaHandler(nfa);
-        DFA dfa = (DFA) nfaToDfaHandler.handle().getResult();
-
-        DfaToTransitionTableHandler dfaToTransitionTableHandler = new DfaToTransitionTableHandler(dfa);
-        TransitionTable transitionTable = (TransitionTable)dfaToTransitionTableHandler.handle().getResult();
-
-        LexicalAnalysisHandler lexicalAnalysisHandler = new LexicalAnalysisHandler(transitionTable);
+        LexicalAnalysisHandler lexicalAnalysisHandler = new LexicalAnalysisHandler();
 
         String tempString;
         BufferedReader reader = new BufferedReader(new FileReader(fileName));

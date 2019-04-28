@@ -74,10 +74,10 @@ public class NfaToDfaHandler implements BaseHandler {
             //make the new state be accpet state in dfa if this epsilon state list have accpet state of nfa
             for (State epsilonState : stateList) {
                 if (nfa.getAccpetStates().contains(epsilonState)) {
-                    if (newState.getTokenType() != null) {
-                        throw new IllegalStateException();
-                    }
-                    newState.setTokenType(epsilonState.getTokenType());
+//                    if (newState.getTokenType() != null) {
+//                        throw new IllegalStateException();
+//                    }
+//                    newState.setTokenType(epsilonState.getTokenType());
                     dfa.addAccpetState(newState);
                 }
             }

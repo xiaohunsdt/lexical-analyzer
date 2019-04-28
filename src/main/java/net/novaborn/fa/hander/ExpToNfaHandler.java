@@ -41,23 +41,12 @@ public class ExpToNfaHandler implements BaseHandler {
         //conversion reg to states of nfa
         State firstState = this.nfa.getStartState();
 
-        for (TokenExpression tokenExpression: TokenExpressionList.getExpressions()){
-            //
-            StateGroup stateGroup = this.handle(tokenExpression.getExpression());
-            State start = stateGroup.getStartState();
-            State end = stateGroup.getEndState();
-            end.setTokenType(tokenExpression.getType());
-            // connect state        first ----> start------>end
-            nfa.addTransitionFunc(firstState, start, null);
-            nfa.addAccpetState(end);
-        }
-//        StateGroup stateGroup = this.handle(TokenExpressionList.getExpressions().get(0).getExpression());
-//        State start = stateGroup.getStartState();
-//        State end = stateGroup.getEndState();
-//        end.setTokenType(TokenExpressionList.getExpressions().get(0).getType());
-//        // connect state        first ----> start------>end
-//        nfa.addTransitionFunc(firstState, start, null);
-//        nfa.addAccpetState(end);
+        StateGroup stateGroup = this.handle(this.expression);
+        State start = stateGroup.getStartState();
+        State end = stateGroup.getEndState();
+        // connect state        first ----> start------>end
+        nfa.addTransitionFunc(firstState, start, null);
+        nfa.addAccpetState(end);
 
         return this;
     }
