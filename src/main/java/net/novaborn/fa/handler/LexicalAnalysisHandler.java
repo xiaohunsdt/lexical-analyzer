@@ -20,7 +20,7 @@ import java.util.*;
  * Description:
  */
 public class LexicalAnalysisHandler implements BaseHandler {
-    private Map<TokenType, TransitionTable> transitionTables = new HashMap<>();
+    private Map<TokenType, TransitionTable> transitionTables = new LinkedHashMap<>();
     private String originStr;
     private List<Token> tokens = new ArrayList<>();
 
