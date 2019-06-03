@@ -1,5 +1,4 @@
 # lexical-analyzer
-20165172 WANGZHANYONG 왕천용
 
 >This project develop by java. And I uesed Java develop design patterns and some frameworks for better development.I finished the whole project on my own, so I have no time to complete the final code optimization. Such as use hopcroft algorithm to minimize DFA and make output result file. And some code collation. I've made code comments on important points of source code. So I don't think it's too hard to read code. 
 
